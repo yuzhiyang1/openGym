@@ -9,6 +9,25 @@ import { uid } from './format.js'
 import { EXIDX } from './exercises.js'
 import { eqAvailable, ALL_EQUIPMENT } from './equipment.js'
 
+
+const TIETOU_12W = [
+  ['tietou-back-a', '背部 A：厚度 + 后三角', 'pullup', [
+    ['gym-A-03-01', 3, 10], ['gym-A-05-03', 3, 10], ['gym-A-05-05', 3, 10], ['gym-B-03-01', 3, 15]
+  ]],
+  ['tietou-shoulder-chest-a', '肩 + 胸 A：上胸重点', 'barbell', [
+    ['gym-B-03-04', 3, 8], ['gym-B-03-03', 3, 12], ['gym-B-05-04', 2, 15], ['gym-A-10-02', 4, 8], ['gym-A-09-04', 3, 10]
+  ]],
+  ['tietou-legs-core', '腿 + 核心', 'legs', [
+    ['gym-B-04-01', 3, 8], ['gym-B-08-01', 3, 10], ['gym-B-11-02', 3, 10], ['gym-B-10-02', 2, 12], ['gym-B-03-02', 3, 12], ['gym-B-01-06', 3, 12]
+  ]],
+  ['tietou-back-b', '背部 B：宽度 + 二头', 'pullup', [
+    ['gym-A-01-03', 3, 12], ['gym-A-05-04', 3, 8], ['gym-A-06-03', 3, 10], ['gym-B-01-02', 3, 10], ['gym-B-01-05', 2, 12]
+  ]],
+  ['tietou-shoulder-chest-b', '肩 + 胸 B：胸部主训练', 'barbell', [
+    ['gym-B-05-03', 3, 10], ['gym-B-05-04', 3, 12], ['gym-B-03-01', 3, 15], ['gym-A-09-02', 3, 8], ['gym-A-08-02', 3, 10]
+  ]]
+]
+
 const PPL = [
   ['push', 'Push Day', 'barbell', [['0025', 4, 8], ['0047', 3, 10], ['0426', 3, 10], ['0334', 3, 12], ['0241', 3, 12], ['0251', 3, 10]]],
   ['pull', 'Pull Day', 'pullup', [['2330', 4, 10], ['0027', 4, 8], ['1323', 3, 10], ['0031', 3, 10], ['0313', 3, 12]]],
@@ -37,6 +56,7 @@ const FIVE_BY_FIVE = [
 // [weekday, routineKey] — weekday is a DAYN index, so 1 is Monday. Fixed weeks only: every
 // plan repeats the same seven days, which is all the weekly plan model can represent.
 const PLANS = {
+  'tietou-12w': { routines: TIETOU_12W, schedule: [[1, 'tietou-back-a'], [2, 'tietou-shoulder-chest-a'], [3, 'tietou-legs-core'], [5, 'tietou-back-b'], [6, 'tietou-shoulder-chest-b']] },
   ppl: { routines: PPL, schedule: [[1, 'push'], [3, 'pull'], [5, 'legs']] },
   'upper-lower': { routines: UPPER_LOWER, schedule: [[1, 'upper-a'], [2, 'lower-a'], [4, 'upper-b'], [5, 'lower-b']] },
   'full-body': { routines: FULL_BODY, schedule: [[1, 'fb-a'], [3, 'fb-b'], [5, 'fb-c']] },
