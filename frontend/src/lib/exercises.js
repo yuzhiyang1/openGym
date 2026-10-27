@@ -92,7 +92,7 @@ const BUILTIN = new Set(INDEX_CATALOGUE)
 export function registerCustom(list) {
   customIds.forEach(id => {
     delete EXIDX[id]
-    const builtIn = CATALOGUE.find(ex => ex.id === id)
+    const builtIn = INDEX_CATALOGUE.find(ex => ex.id === id)
     if (builtIn) EXIDX[id] = builtIn
   })
   const xs = (Array.isArray(list) ? list : []).filter(e => e && e.id != null)
