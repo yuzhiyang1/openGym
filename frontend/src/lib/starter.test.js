@@ -6,6 +6,13 @@ import { buildStarterPlan, starterPlanDays, starterPlanOptions, starterRoutines 
 // The approved prescription, written out again rather than imported: a test that reads the
 // same table as the code would pass no matter what that table said. [weekday, name, sets].
 const APPROVED = {
+  'tietou-12w': [
+    [1, '背部 A：厚度 + 后三角', [['gym-A-03-01', 3, 10], ['gym-A-05-03', 3, 10], ['gym-A-05-05', 3, 10], ['gym-B-03-01', 3, 15]]],
+    [2, '肩 + 胸 A：上胸重点', [['gym-B-03-04', 3, 8], ['gym-B-03-03', 3, 12], ['gym-B-05-04', 2, 15], ['gym-A-10-02', 4, 8], ['gym-A-09-04', 3, 10]]],
+    [3, '腿 + 核心', [['gym-B-04-01', 3, 8], ['gym-B-08-01', 3, 10], ['gym-B-11-02', 3, 10], ['gym-B-10-02', 2, 12], ['gym-B-03-02', 3, 12], ['gym-B-01-06', 3, 12]]],
+    [5, '背部 B：宽度 + 二头', [['gym-A-01-03', 3, 12], ['gym-A-05-04', 3, 8], ['gym-A-06-03', 3, 10], ['gym-B-01-02', 3, 10], ['gym-B-01-05', 2, 12]]],
+    [6, '肩 + 胸 B：胸部主训练', [['gym-B-05-03', 3, 10], ['gym-B-05-04', 3, 12], ['gym-B-03-01', 3, 15], ['gym-A-09-02', 3, 8], ['gym-A-08-02', 3, 10]]],
+  ],
   ppl: [
     [1, 'Push Day', [['0025', 4, 8], ['0047', 3, 10], ['0426', 3, 10], ['0334', 3, 12], ['0241', 3, 12], ['0251', 3, 10]]],
     [3, 'Pull Day', [['2330', 4, 10], ['0027', 4, 8], ['1323', 3, 10], ['0031', 3, 10], ['0313', 3, 12]]],
@@ -32,9 +39,9 @@ const APPROVED = {
 const shape = r => r.ex.map(e => [e.id, e.sets, e.reps])
 
 describe('starter plan catalog', () => {
-  it('offers exactly the four plans, with the day count read off the schedule', () => {
+  it('offers the starter plans, with the day count read off the schedule', () => {
     expect(starterPlanOptions()).toEqual([
-      { id: 'ppl', days: 3 }, { id: 'upper-lower', days: 4 },
+      { id: 'tietou-12w', days: 5 }, { id: 'ppl', days: 3 }, { id: 'upper-lower', days: 4 },
       { id: 'full-body', days: 3 }, { id: '5x5', days: 3 },
     ])
     for (const { id, days } of starterPlanOptions()) expect(starterPlanDays(id)).toHaveLength(days)

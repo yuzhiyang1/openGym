@@ -1,4 +1,5 @@
 import { EXDB, EXALIAS } from './exercises-data.js'
+import GYM_EXERCISES from './gym-exercises-data.js'
 import MUSCLE_MAP from './exercise-muscle-map.json' with { type: 'json' }
 import V13_IDS from './catalogue-v13-ids.json' with { type: 'json' }
 import { t, getVersion, exerciseNameSearchText } from './i18n-core.js'
@@ -19,7 +20,10 @@ const catalogueExercise = ex => {
   return out
 }
 
-export const CATALOGUE = EXDB.map(catalogueExercise)
+const BASE_CATALOGUE = EXDB.map(catalogueExercise)
+// This fork intentionally exposes the user's real gym machines as the primary library.
+export const CATALOGUE = GYM_EXERCISES.map(catalogueExercise)
+const INDEX_CATALOGUE = [...BASE_CATALOGUE, ...CATALOGUE]
 
 // The generated dataset already supplies secondary muscles for most exercises. Keep the
 // handful of conservative catalogue additions that are useful to the muscle map here so a
@@ -43,7 +47,7 @@ export const smOf = ex => {
 }
 
 export const EXIDX = {}
-CATALOGUE.forEach(e => { EXIDX[e.id] = e })
+INDEX_CATALOGUE.forEach(e => { EXIDX[e.id] = e })
 // The id of a drawing that is no exercise of its own (the female figure of a male exercise) looks
 // up the exercise it draws. Never stored by the app, but a plan file or an import may carry one.
 // Not enumerable, so anything that walks the index still sees every exercise once.
@@ -84,11 +88,11 @@ export function byCategory(list, cat) {
 // Custom (user-created) exercises live in synced state S.customEx (issue #11) and are
 // merged into the id index here so every EXIDX[id] lookup keeps working unchanged.
 let customIds = new Set()
-const BUILTIN = new Set(CATALOGUE)
+const BUILTIN = new Set(INDEX_CATALOGUE)
 export function registerCustom(list) {
   customIds.forEach(id => {
     delete EXIDX[id]
-    const builtIn = CATALOGUE.find(ex => ex.id === id)
+    const builtIn = INDEX_CATALOGUE.find(ex => ex.id === id)
     if (builtIn) EXIDX[id] = builtIn
   })
   const xs = (Array.isArray(list) ? list : []).filter(e => e && e.id != null)
@@ -197,9 +201,9 @@ export const figureOf = S => (S?.exFigure === 'female' || S?.exFigure === 'male'
   ? S.exFigure
   : (S?.body === 'female' ? 'female' : 'male')
 const drawing = (ex, figure) => (figure === 'female' ? ex.fv : figure === 'male' ? ex.mv : null) || null
-export const imgSrc = (ex, figure) => IMG_BASE + (drawing(ex, figure) ? drawing(ex, figure) + '.webp' : ex.img)
+export const imgSrc = (ex, figure) => ex?.gym && ex.imgData ? ex.imgData : IMG_BASE + (drawing(ex, figure) ? drawing(ex, figure) + '.webp' : ex.img)
 const clipFile = f => (CLIP_EXT !== '.mp4' && f.endsWith('.mp4') ? f.slice(0, -4) + CLIP_EXT : f)
-export const gifSrc = (ex, figure) => GIF_BASE + clipFile(drawing(ex, figure) ? drawing(ex, figure) + '.mp4' : ex.gif)
+export const gifSrc = (ex, figure) => ex?.gym && ex.imgData ? ex.imgData : GIF_BASE + clipFile(drawing(ex, figure) ? drawing(ex, figure) + '.mp4' : ex.gif)
 // The catalogue's animations are short MP4 loops; a fork's or an older build's may still be GIFs.
 export const isVideoSrc = src => /\.(mp4|webm)(\?|$)/i.test(src || '')
 
