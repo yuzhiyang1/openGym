@@ -175,6 +175,7 @@ export function confirmSheet(opts) {
 // string literals written inside a t() call, so copy parked in the catalog and passed in as a
 // variable is invisible to it — it would quietly stay English in every language.
 const PLAN_COPY = {
+  'tietou-12w': () => ({ name: t('头铁拱墅 12 周增肌'), about: t('背部两练、肩部两练、胸部加强，使用场馆真实器械。') }),
   ppl: () => ({ name: t('Push / Pull / Legs'), about: t('Push, pull and legs each get their own day.') }),
   'upper-lower': () => ({ name: t('Upper / Lower'), about: t('Upper body twice, lower body twice.') }),
   'full-body': () => ({ name: t('Full Body'), about: t('Three sessions, the whole body each time.') }),
